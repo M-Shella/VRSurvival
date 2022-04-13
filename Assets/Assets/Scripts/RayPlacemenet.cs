@@ -1,32 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
+using Autohand;
+using Autohand.Demo;
 using UnityEngine;
 
 public class RayPlacemenet : MonoBehaviour {
     private GameObject objectToSpawn;
-    void Start() {
-        objectToSpawn = GetComponent<ObjectToSpawn>().item;
-        Debug.Log(objectToSpawn.name+ " " +  transform.GetChild(0).name+ " " +  transform.GetChild(1).name);
-        transform.GetChild(0).GetComponent<MeshFilter>().mesh = objectToSpawn.GetComponent<MeshFilter>().sharedMesh;
-    }
+    private bool enabled;
+    public XRHandControllerLink turnController;
+    [Header("Input")]
+    public Common2DAxis turnAxis;
 
-    void FixedUpdate()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity)) {
-            return;
-        }
-        else {
-            
-        }
-        if (!hit.transform.CompareTag("Terrain")) return;
-        
-        transform.GetChild(0).position = hit.point;
+    private bool rotationDelay;
+    private float rotation;
+
+    void Start() {
+        enabled = false;
+        rotationDelay = true;
+        ChangeObjectToSpawn();
         transform.GetChild(0).rotation = Quaternion.identity;
     }
 
-    public void SpawnItem() {
-        Instantiate(objectToSpawn, transform.GetChild(0).position, Quaternion.identity);
+    void FixedUpdate() {
+        transform.GetChild(0).gameObject.SetActive(enabled);
+        RaycastHit hit;
+        if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity)) {
+            enabled = false;;
+            return;
+        }
+        if (!hit.transform.CompareTag("Terrain") && !hit.transform.CompareTag("InGrid")) {
+            enabled = false;
+            return;
+        }
+        enabled = true;
+        
+        //Rotation
+        if (rotationDelay && (turnController.GetAxis2D(turnAxis).x < -0.2 || turnController.GetAxis2D(turnAxis).x > 0.2)) {
+            if (turnController.GetAxis2D(turnAxis).x < -0.1) rotation -= 90f;
+            if (turnController.GetAxis2D(turnAxis).x > 0.1) rotation += 90f;
+            rotationDelay = false;
+        }else if(turnController.GetAxis2D(turnAxis).x > -0.05 && turnController.GetAxis2D(turnAxis).x < 0.05) rotationDelay = true;
+
+        if (objectToSpawn.CompareTag("InGrid")) {
+            transform.GetChild(0).position = new Vector3( Mathf.Floor(hit.point.x/2) * 2, Mathf.Floor(hit.point.y/2) * 2, Mathf.Floor(hit.point.z/2) * 2);
+        }else transform.GetChild(0).position = hit.point;
+        
+        transform.GetChild(0).rotation = Quaternion.Euler(0f,rotation,0f);
     }
-    
+
+    public void SpawnItem() {
+        if (!enabled) return;
+        Instantiate(objectToSpawn, transform.GetChild(0).position, transform.GetChild(0).rotation);
+    }
+
+    public void ChangeObjectToSpawn() {
+        objectToSpawn = GetComponent<ObjectToSpawn>().item;
+        transform.GetChild(0).GetComponent<MeshFilter>().mesh = GetComponent<ObjectToSpawn>().item.GetComponent<MeshFilter>().sharedMesh;
+    }    
 }
