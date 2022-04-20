@@ -10,7 +10,6 @@ namespace Assets.Scripts.Inventory {
         }
 
         public void SpawnItem() {
-            Debug.Log(handleStackable.nuberOfItemsInside);
             if (handleStackable.nuberOfItemsInside > 1) {
                 Instantiate(item, transform.position, Quaternion.identity);
                 handleStackable.ChangeNumberOfItems(-1);

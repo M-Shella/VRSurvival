@@ -16,10 +16,7 @@ public class ZombieSpawn : MonoBehaviour {
     
     [SerializeField] private int howOftenSpawnAtNight;
     [SerializeField] private int howOftenSpawnAtDay;
-    
-    [SerializeField] private int whenNightStart;
-    [SerializeField] private int whenNightEnd;
-    
+
     private bool delay;
     private int time;
     private int zombieCount;
@@ -29,12 +26,10 @@ public class ZombieSpawn : MonoBehaviour {
         zombieCount = 1;
         StartCoroutine(SpawnDelay());
         time = World.Instance.TimeOfDay;
-        whenNightStart = 1320; //22
-        whenNightEnd = 240; //4
-        howOftenSpawnAtDay = 41;
-        howOftenSpawnAtNight = 21;
-        numberOfZombiesToSpawnAtDay = 4;
-        numberOfZombiesToSpawnAtNight = 8;
+        howOftenSpawnAtDay = 51;
+        howOftenSpawnAtNight = 31;
+        numberOfZombiesToSpawnAtDay = 2;
+        numberOfZombiesToSpawnAtNight = 3;
         rangeAtNight = 20;
         rangeAtDay = 40;
     }
@@ -44,11 +39,11 @@ public class ZombieSpawn : MonoBehaviour {
         
         if (time > World.Instance.dayEndTime || time <= World.Instance.dayStartTime) {
             if (time % howOftenSpawnAtDay != 0) return;
-            if (!delay) SpawnZombieNearPlayer(rangeAtDay, Random.Range(numberOfZombiesToSpawnAtDay-2, numberOfZombiesToSpawnAtDay+2));
+            if (!delay) SpawnZombieNearPlayer(rangeAtDay, Random.Range(numberOfZombiesToSpawnAtDay-1, numberOfZombiesToSpawnAtDay+2));
         }
         else {
             if (time % howOftenSpawnAtNight != 0) return;
-            if (!delay) SpawnZombieNearPlayer(rangeAtNight, Random.Range(numberOfZombiesToSpawnAtNight-2, numberOfZombiesToSpawnAtNight+2));
+            if (!delay) SpawnZombieNearPlayer(rangeAtNight, Random.Range(numberOfZombiesToSpawnAtNight-1, numberOfZombiesToSpawnAtNight+1));
         }
     }
 

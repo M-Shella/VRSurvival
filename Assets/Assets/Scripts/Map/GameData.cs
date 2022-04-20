@@ -7,7 +7,8 @@ public static class GameData {
     public static float terrainSurface = 0.5f;
     public static int ChunkWidth = 16;
     public static int ChunkHeight = 250;
-    public static FastNoise fastNoise = new FastNoise();
+    public static FastNoise fastNoise = new FastNoise(Mathf.RoundToInt(Random.Range(1,9999999999)));
+
     public static float BaseTerrainHeight = 60f; // Minimum height of terrain.
     public static float TerrainHeightRange = 5f; // The max height (above BaseTerrainHeight) our terrain can be.
 

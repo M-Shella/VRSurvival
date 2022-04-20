@@ -28,7 +28,8 @@ public class Tree : MonoBehaviour{
     }
 
     private void OnCollisionEnter(Collision other) {
-        if (!other.gameObject.CompareTag("Axe")) return;
+        if (!other.gameObject.CompareTag("Item")) return;
+        if (!other.gameObject.name.Contains("Axe")) return;
         hp -= 1;
         SpawnStick(stick);
     }

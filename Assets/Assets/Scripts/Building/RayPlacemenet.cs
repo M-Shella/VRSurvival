@@ -41,9 +41,9 @@ public class RayPlacemenet : MonoBehaviour {
             rotationDelay = false;
         }else if(turnController.GetAxis2D(turnAxis).x > -0.05 && turnController.GetAxis2D(turnAxis).x < 0.05) rotationDelay = true;
 
-        if (objectToSpawn.CompareTag("InGrid")) {
-            transform.GetChild(0).position = new Vector3( Mathf.Floor(hit.point.x/2) * 2, Mathf.Floor(hit.point.y/2) * 2, Mathf.Floor(hit.point.z/2) * 2);
-        }else transform.GetChild(0).position = hit.point;
+        transform.GetChild(0).position = objectToSpawn.CompareTag("InGrid") 
+            ? new Vector3( Mathf.Floor(hit.point.x/2.5f) * 2.5f, Mathf.Floor(hit.point.y/2.5f) * 2.5f, Mathf.Floor(hit.point.z/2.5f) * 2.5f) 
+            : hit.point;
         
         transform.GetChild(0).rotation = Quaternion.Euler(0f,rotation,0f);
     }

@@ -19,13 +19,16 @@ public class rock : MonoBehaviour{
             Destroyed();
         }
     }
-    private void OnCollisionEnter(Collision other){
-        if (other.gameObject.CompareTag("Pickaxe")){
-            hp -= 1;
-            var smallRocka = Instantiate(smallRock, new Vector3(position.x,position.y+1.2f,position.z), Quaternion.identity);
-            var rockRB = smallRocka.GetComponent<Rigidbody>();
-            rockRB.AddForce(Random.Range(-4,4), .5f, Random.Range(-4,4), ForceMode.Impulse);
-        }
+    private void OnCollisionEnter(Collision other) {
+        if (!other.gameObject.CompareTag("Item")) return;
+        if (!other.gameObject.name.Contains("Pickaxe")) return;
+        var contact = other.contacts[0];
+        var spawnpoint = contact.point;
+        spawnpoint.y += 0.1f;
+        hp -= 1;
+        var smallRocka = Instantiate(smallRock, spawnpoint, Quaternion.identity);
+        var rockRB = smallRocka.GetComponent<Rigidbody>();
+        rockRB.AddForce(Random.Range(-4,4), .5f, Random.Range(-4,4), ForceMode.Impulse);
     }
 
     private void Destroyed(){

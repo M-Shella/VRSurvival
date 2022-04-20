@@ -8,7 +8,9 @@ public class World : MonoBehaviour {
     private static World _instance;
     
     public TextMeshPro clock;
-
+    public TextMeshPro hpText;
+    public TextMeshPro killText;
+    
     public Texture2D[] terrainTextures;
     
     public Transform sun;
@@ -27,6 +29,8 @@ public class World : MonoBehaviour {
     [Range(4f, 0f)] public float clockSpeed = 1f;
     public static World Instance { get { return _instance; } }
 
+    public int playerHp;
+    public int playerKills;
     public int TimeOfDay {
         get { return _timeOfDay;}
         set {
@@ -62,6 +66,8 @@ public class World : MonoBehaviour {
         dayText = day.ToString();
 
         clock.text = string.Format("DAY: {0} TIME: {1}:{2}", dayText + '\n', hours.ToString("D2"), minutes.ToString("D2"));
+        hpText.text = string.Format("{0} / 100", playerHp.ToString("D2"));
+        killText.text = string.Format("{0}", playerKills.ToString("D2"));
 
     }
     private void Awake() {
