@@ -3243,7 +3243,7 @@ MonoBehaviour:
   rangeAtNight: 40
   rangeAtDay: 20
   howOftenSpawnAtNight: 31
-  howOftenSpawnAtDay: 51
+  howOftenSpawnAtDay: 53
 --- !u!4 &363207682
 Transform:
   m_ObjectHideFlags: 0
@@ -6416,7 +6416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &792785394
 Transform:
   m_ObjectHideFlags: 0
